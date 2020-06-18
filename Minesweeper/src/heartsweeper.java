@@ -1,7 +1,4 @@
 import javax.swing.*;
-import javax.swing.event.UndoableEditListener;
-import javax.swing.text.Document;
-import javax.swing.undo.UndoManager;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -47,28 +44,43 @@ class TitlePanel extends JPanel{
     }
 }
 
-class Panel10 extends JPanel{   // 각각 지뢰찾기 화면 구성
+class Panel10 extends JPanel implements minesweeper{   /* 각각 지뢰찾기 화면 구성 */
     JPanelChange pc;
     public Panel10(JPanelChange pc){
         setLayout(null);
         this.pc = pc;
+        setScreen();
+    }
+    public void setScreen(){
+
     }
 
 }
 
-class Panel15 extends JPanel{
+class Panel15 extends JPanel implements minesweeper{
     JPanelChange pc;
     public Panel15(JPanelChange pc){
         setLayout(null);
         this.pc = pc;
+        JLabel a = new JLabel("Hi");
+        a.setBounds(100, 100, 300, 300);
+        add(a);
+        setScreen();
+    }
+    public void setScreen(){
+
     }
 }
 
-class Panel30 extends JPanel{
+class Panel30 extends JPanel implements minesweeper{
     JPanelChange pc;
     public Panel30(JPanelChange pc){
         setLayout(null);
         this.pc = pc;
+        setScreen();
+    }
+    public void setScreen(){
+
     }
 }
 
@@ -115,7 +127,7 @@ public class heartsweeper extends JFrame {
     public void createMenu(){   // 메뉴 바 만드는 함수
         JMenuBar mb = new JMenuBar();
         String[] barName = {"Game", "Edit", "Help"};
-        String[][] subItem = {{"new game", "10 x 10", "25 x 25", "50 x 50"}, {"실행 취소"}, {"도움말"}};
+        String[][] subItem = {{"new game", "10 x 10", "15 x 15", "30 x 30"}, {"실행 취소"}, {"도움말"}};
         JMenu[] menu = new JMenu[3];
         JMenuItem[][] menuItems = new JMenuItem[3][];
         for(int i=0;i<barName.length;i++){
