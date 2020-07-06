@@ -2,14 +2,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 import java.io.*;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
 import java.util.*;
-import java.util.List;
 
 interface minesweeper{
     /* 맵 만들기 랜덤 지뢰만들기 눌럿을때 그림바뀌기 등등 */
-    public void setScreen();
+    void setScreen();
+    void createHeart();
+    boolean isExist(int row, int col);
+    int getMine(int row, int col);
+    void addGrid(Component c, int x, int y, int w);
 }
 
 class TitlePanel extends JPanel{
@@ -128,7 +129,7 @@ class Panel10 extends JPanel implements minesweeper{   /* 각각 지뢰찾기 �
 
         return cnt;
     }
-    private void addGrid(Component c, int x, int y, int w){
+    public void addGrid(Component c, int x, int y, int w){
         gbc.gridx = x;
         gbc.gridy = y;
         gbc.gridwidth = w;
@@ -326,7 +327,7 @@ class Panel15 extends JPanel implements minesweeper{
 
         return cnt;
     }
-    private void addGrid(Component c, int x, int y, int w){
+    public void addGrid(Component c, int x, int y, int w){
         gbc.gridx = x;
         gbc.gridy = y;
         gbc.gridwidth = w;
@@ -414,7 +415,7 @@ class Panel20 extends JPanel implements minesweeper{
 
         return cnt;
     }
-    private void addGrid(Component c, int x, int y, int w){
+    public void addGrid(Component c, int x, int y, int w){
         gbc.gridx = x;
         gbc.gridy = y;
         gbc.gridwidth = w;
@@ -492,35 +493,31 @@ public class heartsweeper extends JFrame {
             panelSet.panel10 = new Panel10(panelSet);
             panelSet.panel15 = new Panel15(panelSet);
             panelSet.panel20 = new Panel20(panelSet);
-            if(cmd.equals("new game"))
-                panelSet.change("titlePanel");
-            else if(cmd.equals("10 x 10"))
-                panelSet.change("panel10");
-            else if(cmd.equals("15 x 15"))
-                panelSet.change("panel15");
-            else if(cmd.equals("20 x 20"))
-                panelSet.change("panel20");
-            else{
-                JTextArea textArea = new JTextArea(6, 25);
-                String path = TitlePanel.class.getResource("").getPath();
-                StringBuilder line = new StringBuilder();
-                try {
-                    FileReader r = new FileReader(path+"message.txt");
-                    int k;
-                    for(;;){
-                        k=r.read();
-                        if(k==-1) break;
-                        line.append((char) k);
-                    }
-                    r.close();
+            switch (cmd) {
+                case "new game": panelSet.change("titlePanel");break;
+                case "10 x 10": panelSet.change("panel10");break;
+                case "15 x 15": panelSet.change("panel15");break;
+                case "20 x 20": panelSet.change("panel20");break;
+                default:
+                    JTextArea textArea = new JTextArea(6, 25);
+                    String path = TitlePanel.class.getResource("").getPath();
+                    StringBuilder line = new StringBuilder();
+                    try {
+                        FileReader r = new FileReader(path + "message.txt");
+                        int k;
+                        for (; ; ) {
+                            k = r.read();
+                            if (k == -1) break;
+                            line.append((char) k);
+                        }
+                        r.close();
 
-                } catch (IOException t) {
-                    t.printStackTrace();
-                }
-                textArea.setText(line.toString());
-                textArea.setEditable(false);
-                //JScrollPane scrollPane = new JScrollPane(textArea);
-                JOptionPane.showMessageDialog(panelSet, textArea);
+                    } catch (IOException t) {
+                        t.printStackTrace();
+                    }
+                    textArea.setText(line.toString());
+                    JOptionPane.showMessageDialog(panelSet, textArea);
+                    break;
             }
         }
     }
